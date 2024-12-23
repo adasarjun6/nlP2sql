@@ -1,0 +1,595 @@
+[
+    {
+        "Question": "How many employees are there?",
+        "SQLQuery": "SELECT COUNT(*) FROM Employees;"
+    },
+    {
+        "Question": "List all clients located in California.",
+        "SQLQuery": "SELECT * FROM Clients WHERE State = 'CA';"
+    },
+    {
+        "Question": "What is the total budget for all ongoing projects?",
+        "SQLQuery": "SELECT SUM(Budget) FROM Projects WHERE Status = 'Ongoing';"
+    },
+    {
+        "Question": "Who is the contact person for 'Tech Solutions'?",
+        "SQLQuery": "SELECT ContactPerson FROM Clients WHERE ClientName = 'Tech Solutions';"
+    },
+    {
+        "Question": "What are the names and emails of all employees hired after 2020?",
+        "SQLQuery": "SELECT FirstName, LastName, Email FROM Employees WHERE HireDate > '2020-01-01';"
+    },
+    {
+        "Question": "List all projects that have a budget greater than $150,000.",
+        "SQLQuery": "SELECT * FROM Projects WHERE Budget > 150000;"
+    },
+    {
+        "Question": "What is the average salary of employees in the Engineering department?",
+        "SQLQuery": "SELECT AVG(Salary) FROM Employees WHERE Department = 'Engineering';"
+    },
+    {
+        "Question": "List all projects assigned to 'Alice Johnson'.",
+        "SQLQuery": "SELECT Projects.* FROM Projects JOIN ProjectAssignments ON Projects.ProjectID = ProjectAssignments.ProjectID JOIN Employees ON ProjectAssignments.EmployeeID = Employees.EmployeeID WHERE Employees.FirstName = 'Alice' AND Employees.LastName = 'Johnson';"
+    },
+    {
+        "Question": "Which employees have been assigned as 'Project Manager'?",
+        "SQLQuery": "SELECT Employees.* FROM Employees JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID WHERE ProjectAssignments.Role = 'Project Manager';"
+    },
+    {
+        "Question": "What services have a price less than $80,000?",
+        "SQLQuery": "SELECT * FROM Services WHERE Price < 80000;"
+    },
+    {
+        "Question": "How many clients are based in New York?",
+        "SQLQuery": "SELECT COUNT(*) FROM Clients WHERE City = 'New York';"
+    },
+    {
+        "Question": "List the details of the project with the highest budget.",
+        "SQLQuery": "SELECT * FROM Projects ORDER BY Budget DESC LIMIT 1;"
+    },
+    {
+        "Question": "What is the total number of projects assigned to each employee?",
+        "SQLQuery": "SELECT EmployeeID, COUNT(*) AS TotalProjects FROM ProjectAssignments GROUP BY EmployeeID;"
+    },
+    {
+        "Question": "List the names of all clients who have ongoing projects.",
+        "SQLQuery": "SELECT DISTINCT Clients.ClientName FROM Clients JOIN Projects ON Clients.ClientID = Projects.ClientID WHERE Projects.Status = 'Ongoing';"
+    },
+    {
+        "Question": "What is the total salary expense for the Marketing department?",
+        "SQLQuery": "SELECT SUM(Salary) FROM Employees WHERE Department = 'Marketing';"
+    },
+    {
+        "Question": "List all employees who have not been assigned to any project.",
+        "SQLQuery": "SELECT * FROM Employees WHERE EmployeeID NOT IN (SELECT EmployeeID FROM ProjectAssignments);"
+    },
+    {
+        "Question": "How many projects are completed?",
+        "SQLQuery": "SELECT COUNT(*) FROM Projects WHERE Status = 'Completed';"
+    },
+    {
+        "Question": "What is the total number of services offered?",
+        "SQLQuery": "SELECT COUNT(*) FROM Services;"
+    },
+    {
+        "Question": "List the names of all employees who work in 'Data Science' department.",
+        "SQLQuery": "SELECT FirstName, LastName FROM Employees WHERE Department = 'Data Science';"
+    },
+    {
+        "Question": "What is the budget for 'Project Alpha'?",
+        "SQLQuery": "SELECT Budget FROM Projects WHERE ProjectName = 'Project Alpha';"
+    },
+    {
+        "Question": "List all clients with the email domain 'techsolutions.com'.",
+        "SQLQuery": "SELECT * FROM Clients WHERE Email LIKE '%@techsolutions.com';"
+    },
+    {
+        "Question": "Which projects started in 2023?",
+        "SQLQuery": "SELECT * FROM Projects WHERE StartDate BETWEEN '2023-01-01' AND '2023-12-31';"
+    },
+    {
+        "Question": "What is the average price of all services?",
+        "SQLQuery": "SELECT AVG(Price) FROM Services;"
+    },
+    {
+        "Question": "List all employees who live in Texas.",
+        "SQLQuery": "SELECT * FROM Employees WHERE State = 'TX';"
+    },
+    {
+        "Question": "What are the details of the service 'AI Integration'?",
+        "SQLQuery": "SELECT * FROM Services WHERE ServiceName = 'AI Integration';"
+    },
+    {
+        "Question": "How many employees were hired before 2015?",
+        "SQLQuery": "SELECT COUNT(*) FROM Employees WHERE HireDate < '2015-01-01';"
+    },
+    {
+        "Question": "List all projects along with the client name.",
+        "SQLQuery": "SELECT Projects.*, Clients.ClientName FROM Projects JOIN Clients ON Projects.ClientID = Clients.ClientID;"
+    },
+    {
+        "Question": "Which employees are assigned to 'Project Beta'?",
+        "SQLQuery": "SELECT Employees.* FROM Employees JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID JOIN Projects ON ProjectAssignments.ProjectID = Projects.ProjectID WHERE Projects.ProjectName = 'Project Beta';"
+    },
+    {
+        "Question": "What is the total number of projects each client has?",
+        "SQLQuery": "SELECT ClientID, COUNT(*) AS TotalProjects FROM Projects GROUP BY ClientID;"
+    },
+    {
+        "Question": "List all projects with a description containing the word 'development'.",
+        "SQLQuery": "SELECT * FROM Projects WHERE Description LIKE '%development%';"
+    },
+    {
+        "Question": "List all clients along with their project names.",
+        "SQLQuery": "SELECT Clients.ClientName, Projects.ProjectName FROM Clients JOIN Projects ON Clients.ClientID = Projects.ClientID;"
+    },
+    {
+        "Question": "What is the highest salary in the Engineering department?",
+        "SQLQuery": "SELECT MAX(Salary) FROM Employees WHERE Department = 'Engineering';"
+    },
+    {
+        "Question": "List the names and roles of employees assigned to 'Project Delta'.",
+        "SQLQuery": "SELECT Employees.FirstName, Employees.LastName, ProjectAssignments.Role FROM Employees JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID JOIN Projects ON ProjectAssignments.ProjectID = Projects.ProjectID WHERE Projects.ProjectName = 'Project Delta';"
+    },
+    {
+        "Question": "What is the total revenue from all services?",
+        "SQLQuery": "SELECT SUM(Price) FROM Services;"
+    },
+    {
+        "Question": "List the details of employees who are assigned to more than one project.",
+        "SQLQuery": "SELECT Employees.* FROM Employees WHERE EmployeeID IN (SELECT EmployeeID FROM ProjectAssignments GROUP BY EmployeeID HAVING COUNT(*) > 1);"
+    },
+    {
+        "Question": "Which clients have not started any projects yet?",
+        "SQLQuery": "SELECT * FROM Clients WHERE ClientID NOT IN (SELECT DISTINCT ClientID FROM Projects);"
+    },
+    {
+        "Question": "List all projects and their statuses.",
+        "SQLQuery": "SELECT ProjectName, Status FROM Projects;"
+    },
+    {
+        "Question": "What is the average budget for completed projects?",
+        "SQLQuery": "SELECT AVG(Budget) FROM Projects WHERE Status = 'Completed';"
+    },
+    {
+        "Question": "List all services along with their descriptions and prices.",
+        "SQLQuery": "SELECT ServiceName, Description, Price FROM Services;"
+    },
+    {
+        "Question": "How many employees were hired in each department?",
+        "SQLQuery": "SELECT Department, COUNT(*) AS NumberOfEmployees FROM Employees GROUP BY Department;"
+    },
+    {
+        "Question": "What is the total number of projects in each status?",
+        "SQLQuery": "SELECT Status, COUNT(*) AS TotalProjects FROM Projects GROUP BY Status;"
+    },
+    {
+        "Question": "List the details of all employees who have a salary greater than $100,000.",
+        "SQLQuery": "SELECT * FROM Employees WHERE Salary > 100000;"
+    },
+    {
+        "Question": "Which projects are handled by employees with the job title 'QA Engineer'?",
+        "SQLQuery": "SELECT Projects.* FROM Projects JOIN ProjectAssignments ON Projects.ProjectID = ProjectAssignments.ProjectID JOIN Employees ON ProjectAssignments.EmployeeID = Employees.EmployeeID WHERE Employees.JobTitle = 'QA Engineer';"
+    },
+    {
+        "Question": "What is the email of the contact person for 'NextGen Systems'?",
+        "SQLQuery": "SELECT Email FROM Clients WHERE ClientName = 'NextGen Systems';"
+    },
+    {
+        "Question": "List the details of projects that are 'Completed' and have a budget less than $200,000.",
+        "SQLQuery": "SELECT * FROM Projects WHERE Status = 'Completed' AND Budget < 200000;"
+    },
+    {
+        "Question": "What are the first names of employees who live in 'Austin'?",
+        "SQLQuery": "SELECT FirstName FROM Employees WHERE City = 'Austin';"
+    },
+    {
+        "Question": "How many projects started in 2022?",
+        "SQLQuery": "SELECT COUNT(*) FROM Projects WHERE StartDate BETWEEN '2022-01-01' AND '2022-12-31';"
+    },
+    {
+        "Question": "List the names and email addresses of clients who have projects with a budget over $250,000.",
+        "SQLQuery": "SELECT Clients.ClientName, Clients.Email FROM Clients JOIN Projects ON Clients.ClientID = Projects.ClientID WHERE Projects.Budget > 250000;"
+    },
+    {
+        "Question": "Which employees have 'Manager' in their job title?",
+        "SQLQuery": "SELECT * FROM Employees WHERE JobTitle LIKE '%Manager%';"
+    },
+    {
+        "Question": "What is the most expensive service offered?",
+        "SQLQuery": "SELECT * FROM Services ORDER BY Price DESC LIMIT 1;"
+    },
+    {
+        "Question": "List the names of all employees assigned to projects that are 'Ongoing'.",
+        "SQLQuery": "SELECT DISTINCT Employees.FirstName, Employees.LastName FROM Employees JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID JOIN Projects ON ProjectAssignments.ProjectID = Projects.ProjectID WHERE Projects.Status = 'Ongoing';"
+    },
+    {
+        "Question": "What is the total number of projects handled by 'Charlie Davis'?",
+        "SQLQuery": "SELECT COUNT(*) FROM ProjectAssignments JOIN Employees ON ProjectAssignments.EmployeeID = Employees.EmployeeID WHERE Employees.FirstName = 'Charlie' AND Employees.LastName = 'Davis';"
+    },
+    {
+        "Question": "List the details of all projects that ended in '2023'.",
+        "SQLQuery": "SELECT * FROM Projects WHERE EndDate BETWEEN '2023-01-01' AND '2023-12-31';"
+    },
+    {
+        "Question": "Which employees have a salary between $80,000 and $90,000?",
+        "SQLQuery": "SELECT * FROM Employees WHERE Salary BETWEEN 80000 AND 90000;"
+    },
+    {
+        "Question": "List the contact details of clients located in 'New York' or 'Los Angeles'.",
+        "SQLQuery": "SELECT ClientName, ContactPerson, Email, Phone FROM Clients WHERE City IN ('New York', 'Los Angeles');"
+    },
+    {
+        "Question": "How many services are priced above $90,000?",
+        "SQLQuery": "SELECT COUNT(*) FROM Services WHERE Price > 90000;"
+    },
+    {
+        "Question": "What is the total budget of projects for each client?",
+        "SQLQuery": "SELECT ClientID, SUM(Budget) AS TotalBudget FROM Projects GROUP BY ClientID;"
+    },
+    {
+        "Question": "List all projects that have 'Cloud' in their description.",
+        "SQLQuery": "SELECT * FROM Projects WHERE Description LIKE '%Cloud%';"
+    },
+    {
+        "Question": "Which employees have been assigned to 'Project Iota'?",
+        "SQLQuery": "SELECT Employees.* FROM Employees JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID JOIN Projects ON ProjectAssignments.ProjectID = Projects.ProjectID WHERE Projects.ProjectName = 'Project Iota';"
+    },
+    {
+        "Question": "What is the total salary expense for the 'IT' department?",
+        "SQLQuery": "SELECT SUM(Salary) FROM Employees WHERE Department = 'IT';"
+    },
+    {
+        "Question": "List the names and job titles of employees who have been assigned to 'Project Alpha'.",
+        "SQLQuery": "SELECT Employees.FirstName, Employees.LastName, Employees.JobTitle FROM Employees JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID JOIN Projects ON ProjectAssignments.ProjectID = Projects.ProjectID WHERE Projects.ProjectName = 'Project Alpha';"
+    },
+    {
+        "Question": "Which projects have a start date in the first quarter of 2023?",
+        "SQLQuery": "SELECT * FROM Projects WHERE StartDate BETWEEN '2023-01-01' AND '2023-03-31';"
+    },
+    {
+        "Question": "What is the total budget of all projects handled by 'ABC Corporation'?",
+        "SQLQuery": "SELECT SUM(Budget) FROM Projects JOIN Clients ON Projects.ClientID = Clients.ClientID WHERE Clients.ClientName = 'ABC Corporation';"
+    },
+    {
+        "Question": "List the names and start dates of projects with a budget greater than $200,000.",
+        "SQLQuery": "SELECT ProjectName, StartDate FROM Projects WHERE Budget > 200000;"
+    },
+    {
+        "Question": "How many employees have the job title 'Software Engineer'?",
+        "SQLQuery": "SELECT COUNT(*) FROM Employees WHERE JobTitle = 'Software Engineer';"
+    },
+    {
+        "Question": "List the contact details of clients who have at least one project with a budget over $150,000.",
+        "SQLQuery": "SELECT DISTINCT Clients.ClientName, Clients.ContactPerson, Clients.Email, Clients.Phone FROM Clients JOIN Projects ON Clients.ClientID = Projects.ClientID WHERE Projects.Budget > 150000;"
+    },
+    {
+        "Question": "What is the average salary of employees in the 'Marketing' department?",
+        "SQLQuery": "SELECT AVG(Salary) FROM Employees WHERE Department = 'Marketing';"
+    },
+    {
+        "Question": "Which projects are handled by employees with the last name 'Brown'?",
+        "SQLQuery": "SELECT Projects.* FROM Projects JOIN ProjectAssignments ON Projects.ProjectID = ProjectAssignments.ProjectID JOIN Employees ON ProjectAssignments.EmployeeID = Employees.EmployeeID WHERE Employees.LastName = 'Brown';"
+    },
+    {
+        "Question": "List the details of projects that started before 2023 and are still ongoing.",
+        "SQLQuery": "SELECT * FROM Projects WHERE StartDate < '2023-01-01' AND Status = 'Ongoing';"
+    },
+    {
+        "Question": "What is the highest budget among completed projects?",
+        "SQLQuery": "SELECT MAX(Budget) FROM Projects WHERE Status = 'Completed';"
+    },
+    {
+        "Question": "List the names of all clients along with the total number of projects they have.",
+        "SQLQuery": "SELECT Clients.ClientName, COUNT(Projects.ProjectID) AS TotalProjects FROM Clients LEFT JOIN Projects ON Clients.ClientID = Projects.ClientID GROUP BY Clients.ClientName;"
+    },
+    {
+        "Question": "What is the total number of employees assigned to 'Project Theta'?",
+        "SQLQuery": "SELECT COUNT(*) FROM ProjectAssignments JOIN Projects ON ProjectAssignments.ProjectID = Projects.ProjectID WHERE Projects.ProjectName = 'Project Theta';"
+    },
+    {
+        "Question": "List the details of all employees who work in the 'Sales' department.",
+        "SQLQuery": "SELECT * FROM Employees WHERE Department = 'Sales';"
+    },
+    {
+        "Question": "Which projects have an end date in the fourth quarter of 2023?",
+        "SQLQuery": "SELECT * FROM Projects WHERE EndDate BETWEEN '2023-10-01' AND '2023-12-31';"
+    },
+    {
+        "Question": "What is the total number of services with a price less than $60,000?",
+        "SQLQuery": "SELECT COUNT(*) FROM Services WHERE Price < 60000;"
+    },
+    {
+        "Question": "List the names of employees who have been assigned to more than one ongoing project.",
+        "SQLQuery": "SELECT DISTINCT Employees.FirstName, Employees.LastName FROM Employees JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID JOIN Projects ON ProjectAssignments.ProjectID = Projects.ProjectID WHERE Projects.Status = 'Ongoing' GROUP BY Employees.EmployeeID HAVING COUNT(ProjectAssignments.ProjectID) > 1;"
+    },
+    {
+        "Question": "What is the email address of the contact person for 'Innovatech'?",
+        "SQLQuery": "SELECT Email FROM Clients WHERE ClientName = 'Innovatech';"
+    },
+    {
+        "Question": "List all projects and their start and end dates.",
+        "SQLQuery": "SELECT ProjectName, StartDate, EndDate FROM Projects;"
+    },
+    {
+        "Question": "How many clients are there in each city?",
+        "SQLQuery": "SELECT City, COUNT(*) AS NumberOfClients FROM Clients GROUP BY City;"
+    },
+    {
+        "Question": "Which services have a price between $70,000 and $100,000?",
+        "SQLQuery": "SELECT * FROM Services WHERE Price BETWEEN 70000 AND 100000;"
+    },
+    {
+        "Question": "List the names and job titles of employees hired before 2018.",
+        "SQLQuery": "SELECT FirstName, LastName, JobTitle FROM Employees WHERE HireDate < '2018-01-01';"
+    },
+    {
+        "Question": "What is the total budget of all completed projects?",
+        "SQLQuery": "SELECT SUM(Budget) FROM Projects WHERE Status = 'Completed';"
+    },
+    {
+        "Question": "List the names of all employees along with the total number of projects they are assigned to.",
+        "SQLQuery": "SELECT Employees.FirstName, Employees.LastName, COUNT(ProjectAssignments.ProjectID) AS TotalProjects FROM Employees LEFT JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID GROUP BY Employees.EmployeeID;"
+    },
+    {
+        "Question": "Which clients have projects that started in 2023?",
+        "SQLQuery": "SELECT DISTINCT Clients.ClientName FROM Clients JOIN Projects ON Clients.ClientID = Projects.ClientID WHERE Projects.StartDate BETWEEN '2023-01-01' AND '2023-12-31';"
+    },
+    {
+        "Question": "What is the average hire date of employees in the 'Engineering' department?",
+        "SQLQuery": "SELECT AVG(HireDate) FROM Employees WHERE Department = 'Engineering';"
+    },
+    {
+        "Question": "Which projects have a status of 'Ongoing' and a budget less than $150,000?",
+        "SQLQuery": "SELECT * FROM Projects WHERE Status = 'Ongoing' AND Budget < 150000;"
+    },
+    {
+        "Question": "List the names and salaries of employees who have been assigned to 'Project Epsilon'.",
+        "SQLQuery": "SELECT Employees.FirstName, Employees.LastName, Employees.Salary FROM Employees JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID JOIN Projects ON ProjectAssignments.ProjectID = Projects.ProjectID WHERE Projects.ProjectName = 'Project Epsilon';"
+    },
+    {
+        "Question": "Which employees have salaries greater than $100,000 and work in the 'Engineering' department?",
+        "SQLQuery": "SELECT FirstName, LastName FROM Employees WHERE Salary > 100000 AND Department = 'Engineering';"
+    },
+    {
+        "Question": "List the names and start dates of all projects assigned to 'Alice Johnson'.",
+        "SQLQuery": "SELECT Projects.ProjectName, Projects.StartDate FROM Projects JOIN ProjectAssignments ON Projects.ProjectID = ProjectAssignments.ProjectID JOIN Employees ON ProjectAssignments.EmployeeID = Employees.EmployeeID WHERE Employees.FirstName = 'Alice' AND Employees.LastName = 'Johnson';"
+    },
+    {
+        "Question": "What is the total number of projects each employee is working on?",
+        "SQLQuery": "SELECT Employees.FirstName, Employees.LastName, COUNT(ProjectAssignments.ProjectID) AS TotalProjects FROM Employees LEFT JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID GROUP BY Employees.EmployeeID;"
+    },
+    {
+        "Question": "List the names of clients who have projects ending in 2023.",
+        "SQLQuery": "SELECT DISTINCT Clients.ClientName FROM Clients JOIN Projects ON Clients.ClientID = Projects.ClientID WHERE Projects.EndDate BETWEEN '2023-01-01' AND '2023-12-31';"
+    },
+    {
+        "Question": "What is the total revenue from all services?",
+        "SQLQuery": "SELECT SUM(Price) FROM Services;"
+    },
+    {
+        "Question": "List the details of all employees who have been hired since 2020.",
+        "SQLQuery": "SELECT * FROM Employees WHERE HireDate >= '2020-01-01';"
+    },
+    {
+        "Question": "Which projects have the most employees assigned?",
+        "SQLQuery": "SELECT Projects.ProjectName, COUNT(ProjectAssignments.EmployeeID) AS TotalEmployees FROM Projects JOIN ProjectAssignments ON Projects.ProjectID = ProjectAssignments.ProjectID GROUP BY Projects.ProjectID ORDER BY TotalEmployees DESC;"
+    },
+    {
+        "Question": "List the names and email addresses of employees who have not been assigned to any projects.",
+        "SQLQuery": "SELECT Employees.FirstName, Employees.LastName, Employees.Email FROM Employees LEFT JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID WHERE ProjectAssignments.ProjectID IS NULL;"
+    },
+    {
+        "Question": "List the names of clients along with their contact persons who have projects with a status of 'Completed'.",
+        "SQLQuery": "SELECT DISTINCT Clients.ClientName, Clients.ContactPerson FROM Clients JOIN Projects ON Clients.ClientID = Projects.ClientID WHERE Projects.Status = 'Completed';"
+    },
+    {
+        "Question": "What is the average salary of employees in the 'Design' department?",
+        "SQLQuery": "SELECT AVG(Salary) FROM Employees WHERE Department = 'Design';"
+    },
+    {
+        "Question": "List the names and job titles of employees working on 'Project Beta'.",
+        "SQLQuery": "SELECT Employees.FirstName, Employees.LastName, Employees.JobTitle FROM Employees JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID JOIN Projects ON ProjectAssignments.ProjectID = Projects.ProjectID WHERE Projects.ProjectName = 'Project Beta';"
+    },
+    {
+        "Question": "Which projects have budgets between $100,000 and $200,000?",
+        "SQLQuery": "SELECT * FROM Projects WHERE Budget BETWEEN 100000 AND 200000;"
+    },
+    {
+        "Question": "List the names of employees who live in 'Seattle'.",
+        "SQLQuery": "SELECT FirstName, LastName FROM Employees WHERE City = 'Seattle';"
+    },
+    {
+        "Question": "What is the total number of projects completed by each client?",
+        "SQLQuery": "SELECT Clients.ClientName, COUNT(Projects.ProjectID) AS CompletedProjects FROM Clients JOIN Projects ON Clients.ClientID = Projects.ClientID WHERE Projects.Status = 'Completed' GROUP BY Clients.ClientName;"
+    },
+    {
+        "Question": "List the names of projects along with their budgets for clients located in 'California'.",
+        "SQLQuery": "SELECT Projects.ProjectName, Projects.Budget FROM Projects JOIN Clients ON Projects.ClientID = Clients.ClientID WHERE Clients.State = 'CA';"
+    },
+    {
+        "Question": "Which employees have the same job title as 'Bob Williams'?",
+        "SQLQuery": "SELECT FirstName, LastName FROM Employees WHERE JobTitle = (SELECT JobTitle FROM Employees WHERE FirstName = 'Bob' AND LastName = 'Williams');"
+    },
+    {
+        "Question": "List the details of services costing more than the average service price.",
+        "SQLQuery": "SELECT * FROM Services WHERE Price > (SELECT AVG(Price) FROM Services);"
+    },
+    {
+        "Question": "Which projects have both 'Alice Johnson' and 'Bob Williams' assigned?",
+        "SQLQuery": "SELECT DISTINCT Projects.ProjectName FROM Projects JOIN ProjectAssignments PA1 ON Projects.ProjectID = PA1.ProjectID JOIN Employees E1 ON PA1.EmployeeID = E1.EmployeeID JOIN ProjectAssignments PA2 ON Projects.ProjectID = PA2.ProjectID JOIN Employees E2 ON PA2.EmployeeID = E2.EmployeeID WHERE E1.FirstName = 'Alice' AND E1.LastName = 'Johnson' AND E2.FirstName = 'Bob' AND E2.LastName = 'Williams';"
+    },
+    {
+        "Question": "List the names of employees who were hired in 2019.",
+        "SQLQuery": "SELECT FirstName, LastName FROM Employees WHERE HireDate BETWEEN '2019-01-01' AND '2019-12-31';"
+    },
+    {
+        "Question": "What is the total budget of all projects managed by 'Project Manager' employees?",
+        "SQLQuery": "SELECT SUM(Projects.Budget) FROM Projects JOIN ProjectAssignments ON Projects.ProjectID = ProjectAssignments.ProjectID JOIN Employees ON ProjectAssignments.EmployeeID = Employees.EmployeeID WHERE Employees.JobTitle = 'Project Manager';"
+    },
+    {
+        "Question": "Which services have descriptions containing the word 'development'?",
+        "SQLQuery": "SELECT * FROM Services WHERE Description LIKE '%development%';"
+    },
+    {
+        "Question": "List the details of projects with a status other than 'Completed'.",
+        "SQLQuery": "SELECT * FROM Projects WHERE Status <> 'Completed';"
+    },
+    {
+        "Question": "Which clients have more than one ongoing project?",
+        "SQLQuery": "SELECT Clients.ClientName FROM Clients JOIN Projects ON Clients.ClientID = Projects.ClientID WHERE Projects.Status = 'Ongoing' GROUP BY Clients.ClientName HAVING COUNT(Projects.ProjectID) > 1;"
+    },
+    {
+        "Question": "List the names and phone numbers of employees assigned to projects with budgets over $250,000.",
+        "SQLQuery": "SELECT DISTINCT Employees.FirstName, Employees.LastName, Employees.Phone FROM Employees JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID JOIN Projects ON ProjectAssignments.ProjectID = Projects.ProjectID WHERE Projects.Budget > 250000;"
+    },
+    {
+        "Question": "What is the highest salary in the 'IT' department?",
+        "SQLQuery": "SELECT MAX(Salary) FROM Employees WHERE Department = 'IT';"
+    },
+    {
+        "Question": "Which projects have end dates after their start dates?",
+        "SQLQuery": "SELECT * FROM Projects WHERE EndDate > StartDate;"
+    },
+    {
+        "Question": "List the names of employees and their departments who have been assigned to 'Project Zeta'.",
+        "SQLQuery": "SELECT Employees.FirstName, Employees.LastName, Employees.Department FROM Employees JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID JOIN Projects ON ProjectAssignments.ProjectID = Projects.ProjectID WHERE Projects.ProjectName = 'Project Zeta';"
+    },
+    {
+        "Question": "What is the average budget of all ongoing projects?",
+        "SQLQuery": "SELECT AVG(Budget) FROM Projects WHERE Status = 'Ongoing';"
+    },
+    {
+        "Question": "Which projects are assigned to employees hired in 2021?",
+        "SQLQuery": "SELECT Projects.ProjectName FROM Projects JOIN ProjectAssignments ON Projects.ProjectID = ProjectAssignments.ProjectID JOIN Employees ON ProjectAssignments.EmployeeID = Employees.EmployeeID WHERE Employees.HireDate BETWEEN '2021-01-01' AND '2021-12-31';"
+    },
+    {
+        "Question": "List the names of clients and their email addresses who have at least one completed project.",
+        "SQLQuery": "SELECT DISTINCT Clients.ClientName, Clients.Email FROM Clients JOIN Projects ON Clients.ClientID = Projects.ClientID WHERE Projects.Status = 'Completed';"
+    },
+    {
+        "Question": "List the names and roles of employees assigned to projects with a start date in 2023.",
+        "SQLQuery": "SELECT Employees.FirstName, Employees.LastName, ProjectAssignments.Role FROM Employees JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID JOIN Projects ON ProjectAssignments.ProjectID = Projects.ProjectID WHERE Projects.StartDate BETWEEN '2023-01-01' AND '2023-12-31';"
+    },
+    {
+        "Question": "Which clients have projects with a budget greater than $200,000?",
+        "SQLQuery": "SELECT DISTINCT Clients.ClientName FROM Clients JOIN Projects ON Clients.ClientID = Projects.ClientID WHERE Projects.Budget > 200000;"
+    },
+    {
+        "Question": "List the names and job titles of employees who are system administrators.",
+        "SQLQuery": "SELECT FirstName, LastName, JobTitle FROM Employees WHERE JobTitle = 'System Administrator';"
+    },
+    {
+        "Question": "What is the average duration (in days) of completed projects?",
+        "SQLQuery": "SELECT AVG(DATEDIFF(EndDate, StartDate)) AS AverageDuration FROM Projects WHERE Status = 'Completed';"
+    },
+    {
+        "Question": "List the details of services priced between $80,000 and $100,000.",
+        "SQLQuery": "SELECT * FROM Services WHERE Price BETWEEN 80000 AND 100000;"
+    },
+    {
+        "Question": "Which employees are assigned to more than one project?",
+        "SQLQuery": "SELECT Employees.FirstName, Employees.LastName FROM Employees JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID GROUP BY Employees.EmployeeID HAVING COUNT(ProjectAssignments.ProjectID) > 1;"
+    },
+    {
+        "Question": "List the names of clients who have both completed and ongoing projects.",
+        "SQLQuery": "SELECT Clients.ClientName FROM Clients WHERE Clients.ClientID IN (SELECT ClientID FROM Projects WHERE Status = 'Completed') AND Clients.ClientID IN (SELECT ClientID FROM Projects WHERE Status = 'Ongoing');"
+    },
+    {
+        "Question": "What is the highest budget of any project managed by 'Alice Green'?",
+        "SQLQuery": "SELECT MAX(Projects.Budget) FROM Projects JOIN Clients ON Projects.ClientID = Clients.ClientID WHERE Clients.ContactPerson = 'Alice Green';"
+    },
+    {
+        "Question": "List the names of employees and their hire dates who work in the 'Data Science' department.",
+        "SQLQuery": "SELECT FirstName, LastName, HireDate FROM Employees WHERE Department = 'Data Science';"
+    },
+    {
+        "Question": "Which projects have no employees assigned?",
+        "SQLQuery": "SELECT Projects.ProjectName FROM Projects LEFT JOIN ProjectAssignments ON Projects.ProjectID = ProjectAssignments.ProjectID WHERE ProjectAssignments.EmployeeID IS NULL;"
+    },
+    {
+        "Question": "List the names of clients and the total budgets of their projects.",
+        "SQLQuery": "SELECT Clients.ClientName, SUM(Projects.Budget) AS TotalBudget FROM Clients JOIN Projects ON Clients.ClientID = Projects.ClientID GROUP BY Clients.ClientName;"
+    },
+    {
+        "Question": "What is the total number of employees in each department?",
+        "SQLQuery": "SELECT Department, COUNT(EmployeeID) AS TotalEmployees FROM Employees GROUP BY Department;"
+    },
+    {
+        "Question": "List the details of employees who have worked on 'Project Alpha'.",
+        "SQLQuery": "SELECT Employees.* FROM Employees JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID JOIN Projects ON ProjectAssignments.ProjectID = Projects.ProjectID WHERE Projects.ProjectName = 'Project Alpha';"
+    },
+    {
+        "Question": "List the names of employees who live in cities starting with the letter 'B'.",
+        "SQLQuery": "SELECT FirstName, LastName FROM Employees WHERE City LIKE 'B%';"
+    },
+    {
+        "Question": "Which clients have projects managed by both 'Bob Williams' and 'Alice Johnson'?",
+        "SQLQuery": "SELECT DISTINCT Clients.ClientName FROM Clients JOIN Projects ON Clients.ClientID = Projects.ClientID JOIN ProjectAssignments PA1 ON Projects.ProjectID = PA1.ProjectID JOIN Employees E1 ON PA1.EmployeeID = E1.EmployeeID JOIN ProjectAssignments PA2 ON Projects.ProjectID = PA2.ProjectID JOIN Employees E2 ON PA2.EmployeeID = E2.EmployeeID WHERE E1.FirstName = 'Bob' AND E1.LastName = 'Williams' AND E2.FirstName = 'Alice' AND E2.LastName = 'Johnson';"
+    },
+    {
+        "Question": "List the names of employees who have the same salary as 'Grace Taylor'.",
+        "SQLQuery": "SELECT FirstName, LastName FROM Employees WHERE Salary = (SELECT Salary FROM Employees WHERE FirstName = 'Grace' AND LastName = 'Taylor');"
+    },
+    {
+        "Question": "What is the total number of projects each employee has worked on?",
+        "SQLQuery": "SELECT Employees.FirstName, Employees.LastName, COUNT(ProjectAssignments.ProjectID) AS TotalProjects FROM Employees LEFT JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID GROUP BY Employees.EmployeeID;"
+    },
+    {
+        "Question": "List the names of clients along with the total number of projects they have.",
+        "SQLQuery": "SELECT Clients.ClientName, COUNT(Projects.ProjectID) AS TotalProjects FROM Clients JOIN Projects ON Clients.ClientID = Projects.ClientID GROUP BY Clients.ClientName;"
+    },
+    {
+        "Question": "Which projects have not been assigned to any employees?",
+        "SQLQuery": "SELECT Projects.ProjectName FROM Projects LEFT JOIN ProjectAssignments ON Projects.ProjectID = ProjectAssignments.ProjectID WHERE ProjectAssignments.EmployeeID IS NULL;"
+    },
+    {
+        "Question": "List the names of clients who have projects with budgets greater than $150,000 and start dates in 2023.",
+        "SQLQuery": "SELECT DISTINCT Clients.ClientName FROM Clients JOIN Projects ON Clients.ClientID = Projects.ClientID WHERE Projects.Budget > 150000 AND Projects.StartDate BETWEEN '2023-01-01' AND '2023-12-31';"
+    },
+    {
+        "Question": "What is the average salary of employees who work in departments with names starting with 'S'?",
+        "SQLQuery": "SELECT AVG(Salary) FROM Employees WHERE Department LIKE 'S%';"
+    },
+    {
+        "Question": "List the names and email addresses of employees who have been assigned to projects with budgets over $200,000.",
+        "SQLQuery": "SELECT DISTINCT Employees.FirstName, Employees.LastName, Employees.Email FROM Employees JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID JOIN Projects ON ProjectAssignments.ProjectID = Projects.ProjectID WHERE Projects.Budget > 200000;"
+    },
+    {
+        "Question": "Which clients have projects managed by employees with salaries greater than $100,000?",
+        "SQLQuery": "SELECT DISTINCT Clients.ClientName FROM Clients JOIN Projects ON Clients.ClientID = Projects.ClientID JOIN ProjectAssignments ON Projects.ProjectID = ProjectAssignments.ProjectID JOIN Employees ON ProjectAssignments.EmployeeID = Employees.EmployeeID WHERE Employees.Salary > 100000;"
+    },
+    {
+        "Question": "List the names of clients who have not started any projects yet.",
+        "SQLQuery": "SELECT Clients.ClientName FROM Clients LEFT JOIN Projects ON Clients.ClientID = Projects.ClientID WHERE Projects.ProjectID IS NULL;"
+    },
+    {
+        "Question": "What is the total number of employees hired each year?",
+        "SQLQuery": "SELECT YEAR(HireDate) AS HireYear, COUNT(EmployeeID) AS TotalEmployees FROM Employees GROUP BY HireYear;"
+    },
+    {
+        "Question": "Which employees have been assigned to projects with end dates before their start dates?",
+        "SQLQuery": "SELECT DISTINCT Employees.FirstName, Employees.LastName FROM Employees JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID JOIN Projects ON ProjectAssignments.ProjectID = Projects.ProjectID WHERE Projects.EndDate < Projects.StartDate;"
+    },
+    {
+        "Question": "List the names and hire dates of employees who have not been assigned to any projects.",
+        "SQLQuery": "SELECT Employees.FirstName, Employees.LastName, Employees.HireDate FROM Employees LEFT JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID WHERE ProjectAssignments.EmployeeID IS NULL;"
+    },
+    {
+        "Question": "What is the average budget of projects assigned to 'Acme Corp'?",
+        "SQLQuery": "SELECT AVG(Projects.Budget) FROM Projects JOIN Clients ON Projects.ClientID = Clients.ClientID WHERE Clients.ClientName = 'Acme Corp';"
+    },
+    {
+        "Question": "List the names of clients who have more than two ongoing projects.",
+        "SQLQuery": "SELECT Clients.ClientName FROM Clients JOIN Projects ON Clients.ClientID = Projects.ClientID WHERE Projects.Status = 'Ongoing' GROUP BY Clients.ClientID HAVING COUNT(Projects.ProjectID) > 2;"
+    },
+    {
+        "Question": "What is the highest salary in each department?",
+        "SQLQuery": "SELECT Department, MAX(Salary) AS HighestSalary FROM Employees GROUP BY Department;"
+    },
+    {
+        "Question": "List the names of employees who have worked on projects for 'Tech Solutions'.",
+        "SQLQuery": "SELECT DISTINCT Employees.FirstName, Employees.LastName FROM Employees JOIN ProjectAssignments ON Employees.EmployeeID = ProjectAssignments.EmployeeID JOIN Projects ON ProjectAssignments.ProjectID = Projects.ProjectID JOIN Clients ON Projects.ClientID = Clients.ClientID WHERE Clients.ClientName = 'Tech Solutions';"
+    }
+]
+

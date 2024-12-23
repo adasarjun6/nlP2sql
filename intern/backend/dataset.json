@@ -1,0 +1,285 @@
+[
+    {
+        "Question": "Find me the most used email address",
+        "SQLQuery": "SELECT Email, COUNT(*) AS Count FROM employees GROUP BY Email ORDER BY Count DESC LIMIT 1",
+        "Answer": "alice.johnson@apt.com"
+    },
+    {
+        "Question": "Show the average salary for employees in each department.",
+        "SQLQuery": "SELECT Department, AVG(Salary) AS AverageSalary FROM employees GROUP BY Department",
+        "Answer": "Engineering: 95000.00, Management: 120000.00, Data Science: 80000.00, Quality Assurance: 85000.00, Design: 95000.00, Product: 110000.00, IT: 105000.00, Marketing: 95000.00, Sales: 115000.00"
+    },
+    {
+        "Question": "Find clients in a specific state or postal code range, excluding a particular client.",
+        "SQLQuery": "SELECT c.ClientName, c.State, c.PostalCode FROM clients c WHERE c.State = 'CA' OR c.PostalCode BETWEEN '94101' AND '94199' AND c.ClientID != 2",
+        "Answer": "XYZ Inc., CA, 90001; Tech Solutions, CA, 94101"
+    },
+    {
+        "Question": "Clients Who Spent Over $100,000",
+        "SQLQuery": "SELECT c.ClientName, SUM(p.Budget) AS TotalSpent FROM clients c JOIN projects p ON c.ClientID = p.ClientID GROUP BY c.ClientID HAVING SUM(p.Budget) > 100000 ORDER BY TotalSpent DESC LIMIT 5",
+        "Answer": "Innovatech, Tech Solutions, Acme Corp, DigitalEdge, XYZ Inc."
+    },
+    {
+        "Question": "Average Services Ordered by Clients in New York",
+        "SQLQuery": "SELECT AVG(s.Price) AS AvgPrice FROM projects AS p JOIN clients AS c ON p.ClientID = c.ClientID JOIN projectassignments AS pa ON p.ProjectID = pa.ProjectID JOIN employees AS e ON pa.EmployeeID = e.EmployeeID JOIN services AS s ON p.ProjectName = s.ServiceName WHERE c.City = 'New York' GROUP BY p.ClientID",
+        "Answer": "62500.00"
+    },
+    {
+        "Question": "Clients Who Spent More Than the Average Service Price Across All Clients",
+        "SQLQuery": "SELECT c.ClientName, SUM(p.Budget) AS TotalSpent FROM projects p JOIN clients c ON p.ClientID = c.ClientID  GROUP BY c.ClientID  HAVING SUM(p.Budget) > (SELECT AVG(s.Price) FROM services s)  ORDER BY TotalSpent DESC LIMIT 5",
+        "Answer": "Innovatech, Tech Solutions, Acme Corp, DigitalEdge, XYZ Inc., SoftWareHouse, ProTech, FutureSoft, NextGen Systems, ABC Corporation"
+    },
+    {
+        "Question": "Which project is most time consuming?",
+        "SQLQuery": "SELECT ProjectName, TIMESTAMPDIFF(DAY, StartDate, EndDate) AS Duration FROM projects ORDER BY Duration DESC LIMIT 1",
+        "Answer": "Project Alpha"
+    },
+    {
+        "Question": "Find me which projects client more invested in",
+        "SQLQuery": "SELECT t1.ProjectName, t1.Budget, t2.ClientName FROM projects AS t1 INNER JOIN clients AS t2 ON t1.ClientID = t2.ClientID ORDER BY t1.Budget DESC LIMIT 5",
+        "Answer": "Project Epsilon, Innovatech"
+    },
+    {
+        "Question": "Which employees currently do not have any ongoing projects assigned to them?",
+        "SQLQuery": "SELECT DISTINCT e.EmployeeID, e.FirstName, e.LastName FROM Employees e LEFT JOIN ProjectAssignments pa ON e.EmployeeID = pa.EmployeeID LEFT JOIN Projects p ON pa.ProjectID = p.ProjectID AND p.Status = 'Ongoing' WHERE p.ProjectID IS NULL;",
+        "Answer": "Eve Miller, Frank Wilson, Ivy Thomas, Jack Harris"
+    },
+    {
+        "Question": "Which project is not started yet",
+        "SQLQuery": "SELECT ProjectName FROM projects WHERE StartDate > CURDATE()",
+        "Answer": "Project Beta"
+    },
+    {
+        "Question": "How many employees are currently assigned to each ongoing project, and what is the total budget allocated for these projects?",
+        "SQLQuery": "SELECT p.ProjectName, COUNT(pa.EmployeeID), SUM(p.Budget) FROM projects p JOIN projectassignments pa ON p.ProjectID = pa.ProjectID WHERE p.Status = 'Ongoing' GROUP BY p.ProjectName",
+        "Answer": "Project Alpha, 2, 200000.00"
+    },
+    {
+        "Question": "For each client, how many projects have been completed, ongoing, or are yet to start, and what is the total budget allocated to each category?",
+        "SQLQuery": "SELECT c.ClientName, COUNT(CASE WHEN p.Status = 'Completed' THEN 1 END) AS CompletedProjects, COUNT(CASE WHEN p.Status = 'Ongoing' THEN 1 END) AS OngoingProjects, COUNT(CASE WHEN p.Status = 'Yet to start' THEN 1 END) AS YetToStartProjects, SUM(p.Budget) AS TotalBudget FROM clients c JOIN projects p ON c.ClientID = p.ClientID GROUP BY c.ClientID ORDER BY c.ClientName",
+        "Answer": "| ClientName | CompletedProjects | OngoingProjects | YetToStartProjects | TotalBudget | | ABC Corporation | 0 | 1 | 0 | 100000.00 | | Acme Corp | 1 | 0 | 0 | 200000.00 | | DigitalEdge | 0 | 1 | 0 | 160000.00 | | FutureSoft | 0 | 1 | 0 | 130000.00 | | Innovatech | 1 | 0 | 0 | 300000.00 | | NextGen Systems | 0 | 1 | 0 | 120000.00 | | ProTech | 0 | 1 | 0 | 140000.00 | | SoftWareHouse | 0 | 1 | 0 | 150000.00 | | Tech Solutions | 0 | 1 | 0 | 250000.00 | | XYZ Inc. | 0 | 1 | 0 | 150000.00 |"
+    },
+    {
+        "Question": "Retrieve clients who have projects both ongoing and completed",
+        "SQLQuery": "SELECT DISTINCT  c.ClientID,  c.ClientName FROM   Clients c JOIN  Projects p ON c.ClientID = p.ClientID WHERE  EXISTS ( SELECT 1 FROM Projects p2 WHERE p2.ClientID = c.ClientID  AND p2.Status = 'Ongoing') AND EXISTS ( SELECT 1 FROM Projects p3 WHERE p3.ClientID = c.ClientID AND p3.Status = 'Completed');",
+        "Answer": "1, ABC Corporation"
+    },
+    {
+        "Question": "List all employees who are assigned to every project",
+        "SQLQuery": "SELECT  e.EmployeeID, e.FirstName, e.LastName FROM  Employees e WHERE  NOT EXISTS ( SELECT p.ProjectID FROM Projects p WHERE NOT EXISTS ( SELECT pa2.EmployeeID FROM ProjectAssignments pa2 WHERE pa2.EmployeeID = e.EmployeeID  AND pa2.ProjectID = p.ProjectID ));",
+        "Answer": "3,Charli Davis"
+    },
+    {
+        "Question": "Which employees have roles assigned across all projects, and what are their names?",
+        "SQLQuery": "SELECT  e.EmployeeID, e.FirstName, e.LastName FROM  Employees e WHERE  NOT EXISTS ( SELECT p.ProjectID FROM Projects p  WHERE NOT EXISTS ( SELECT pa2.EmployeeID FROM ProjectAssignments pa2 WHERE pa2.EmployeeID = e.EmployeeID AND pa2.ProjectID = p.ProjectID ));",
+        "Answer": "3,Charlie Davis"
+    },
+    {
+        "Question": "Retrieve clients who have ongoing projects but no completed projects.",
+        "SQLQuery": "SELECT DISTINCT c.ClientName FROM Clients c JOIN Projects p ON c.ClientID = p.ClientID WHERE p.Status = 'Ongoing' AND NOT EXISTS ( SELECT 1 FROM Projects p2 WHERE p2.ClientID = c.ClientID AND p2.Status = 'Completed');",
+        "Answer": "ABC Corporation, XYZ Inc."
+    },
+    {
+        "Question": "Which employees have been assigned roles across all projects, and what roles do they hold?",
+        "SQLQuery": "SELECT e.EmployeeID, e.FirstName, e.LastName, pa.Role FROM Employees e JOIN ProjectAssignments pa ON e.EmployeeID = pa.EmployeeID WHERE NOT EXISTS ( SELECT p.ProjectID FROM Projects p WHERE NOT EXISTS ( SELECT 1 FROM ProjectAssignments pa2 WHERE pa2.EmployeeID = e.EmployeeID AND pa2.ProjectID = p.ProjectID));",
+        "Answer": "3,Charlie Davis ,Data Analyst"
+    },
+    {
+        "Question": "Find employees who have been assigned to all projects and their roles",
+        "SQLQuery": "SELECT e.FirstName, e.LastName, e.JobTitle FROM employees AS e JOIN projectassignments AS pa ON e.EmployeeID = pa.EmployeeID GROUP BY e.EmployeeID HAVING COUNT(DISTINCT pa.ProjectID) = (SELECT COUNT(*) FROM projects)",
+        "Answer": "Bob Williams, Project Manager"
+    },
+    {
+        "Question": "Find clients who have projects with a budget exceeding the average budget of all projects:",
+        "SQLQuery": "SELECT c.ClientName FROM clients c JOIN projects p ON c.ClientID = p.ClientID WHERE p.Budget > (SELECT AVG(Budget) FROM projects)",
+        "Answer": "ABC Corporation, XYZ Inc., NextGen Systems, FutureSoft, ProTech, SoftWareHouse, DigitalEdge"
+    },
+    {
+        "Question": "Find all clients who do not have any associated projects.",
+        "SQLQuery": "SELECT c.ClientName FROM Clients c LEFT JOIN Projects p ON c.ClientID = p.ClientID WHERE p.ProjectID IS NULL;",
+        "Answer": "Acme Corp"
+    },
+    {
+        "Question": "Clients with Most Ongoing Projects",
+        "SQLQuery": "SELECT c.ClientName, COUNT(*) AS NumProjects FROM projects AS p JOIN clients AS c ON p.ClientID = c.ClientID WHERE p.Status = 'Ongoing' GROUP BY c.ClientID ORDER BY NumProjects DESC LIMIT 5",
+        "SQLResult": "Result of the SQL query",
+        "Answer": "ABC Corporation, XYZ Inc., Tech Solutions, NextGen Systems, FutureSoft"
+    },
+    {
+        "Question": "Identify the employee who has worked on the highest number of projects and list those projects.",
+        "SQLQuery": "SELECT e.FirstName, e.LastName, COUNT(p.ProjectID) AS NumProjectsFROM employees AS e JOIN projectassignments AS pa ON e.EmployeeID = pa.EmployeeID JOIN projects AS p ON pa.ProjectID = p.ProjectID GROUP BY e.EmployeeID ORDER BY NumProjects DESC LIMIT 1",
+        "Answer": "Alice Johnson, Project Alpha"
+    },
+    {
+        "Question": "Find the total number of projects currently assigned to each employee, including their full name and department. List the employees starting from those assigned to the most projects to those with the least.",
+        "SQLQuery": "SELECT e.FirstName, e.LastName, e.Department, COUNT(pa.ProjectID) AS NumProjects FROM employees AS e JOIN projectassignments AS pa ON e.EmployeeID = pa.EmployeeID GROUP BY e.EmployeeID ORDER BY NumProjects DESC",
+        "Answer": "Bob Williams, Management, 1,Alice Johnson, Engineering, 1,Charlie Davis, Data Science, 1,Diana Brown, Quality Assurance, 1,Eve Miller, Design, 1,Frank Wilson, Engineering, 1,Grace Taylor, Product, 1,Henry Anderson, IT, 1,Ivy Thomas, Marketing, 1,Jack Harris, Sales, 1"
+    },
+    {
+        "Question": "List all employees who have not been assigned to any projects yet, along with their departments",
+        "SQLQuery": "SELECT e.EmployeeID, e.FirstName, e.LastName, e.Department FROM employees AS e LEFT JOIN projectassignments AS p ON e.EmployeeID = p.EmployeeID WHERE p.ProjectID IS NULL",
+        "Answer": "4,David Smith,Management"
+    },
+    {
+        "Question": "Find all employees who have worked on more than one project. For each of these employees, list their total number of projects, the total budget allocated to those projects, and the average salary of employees who have worked on those projects. Include only employees whose average salary is above the company-wide average salary",
+        "SQLQuery": "SELECT e.FirstName, e.LastName, COUNT(p.ProjectID) AS TotalProjects, SUM(p.Budget) AS TotalBudget, AVG(e2.Salary) AS AverageSalary FROM employees AS e JOIN projectassignments AS pa ON e.EmployeeID = pa.EmployeeID JOIN projects AS p ON pa.ProjectID = p.ProjectID JOIN employees AS e2 ON pa.EmployeeID = e2.EmployeeID GROUP BY e.EmployeeID HAVING COUNT(p.ProjectID) > 1 AND AVG(e2.Salary) > (SELECT AVG(Salary) FROM employees) ORDER BY AverageSalary DESC",
+        "Answer": "Alice Johnson,3,350000.00,100000.00"
+    },
+    {
+        "Question": "Find the employees who have worked on projects for multiple clients and list their names along with the number of distinct clients they have worked for",
+        "SQLQuery": "SELECT e.FirstName, e.LastName, count(distinct c.ClientName) AS num_clients FROM employees AS e JOIN projectassignments AS pa ON e.EmployeeID = pa.EmployeeID JOIN projects AS p ON pa.ProjectID = p.ProjectID JOIN clients AS c ON p.ClientID = c.ClientID GROUP BY e.EmployeeID HAVING num_clients > 1 ORDER BY num_clients DESC",
+        "Answer": " Bob Williams,2"
+    },
+    {
+        "Question": "Find the average salary and name of employees who are assigned to projects with a budget greater than the overall average budget of all projects",
+        "SQLQuery": "SELECT AVG(e.Salary) AS AvgSalary, e.FirstName, e.LastName FROM employees AS e JOIN projectassignments AS pa ON e.EmployeeID = pa.EmployeeID JOIN projects AS p ON pa.ProjectID = p.ProjectID WHERE p.Budget > (SELECT AVG(Budget) FROM projects) GROUP BY e.EmployeeID ORDER BY AvgSalary DESC LIMIT 1",
+        "Answer": "Jack Harris, 115000.00"
+    },
+    {
+        "Question": "Find all employees who are involved in more than one project and whose average salary is higher than the overall average salary of all employees. For each such employee, include their ID, first name, last name, the number of distinct projects they are assigned to, the total budget of these projects, and their average salary. Sort the results by average salary in descending order.",
+        "SQLQuery": "SELECT  e.EmployeeID, e.FirstName, e.LastName, COUNT(DISTINCT pa.ProjectID) AS NumProjects, SUM(p.Budget) AS TotalBudget, AVG(e.Salary) AS AvgSalary FROM  Employees e JOIN  ProjectAssignments pa ON e.EmployeeID = pa.EmployeeID JOIN  Projects p ON pa.ProjectID = p.ProjectID GROUP BY  e.EmployeeID, e.FirstName, e.LastName HAVING  COUNT(DISTINCT pa.ProjectID) > 1 AND AVG(e.Salary) > (SELECT AVG(Salary) FROM Employees) ORDER BY  AvgSalary DESC;",
+        "Answer": " 3,Charlie Davis,2,350000.00,80000.00"
+    },
+    {
+        "Question": "List clients who have more than one ongoing project. Include the client's name, contact person, email, and the number of ongoing projects.",
+        "SQLQuery": "SELECT c.ClientName, c.ContactPerson, c.Email, count(*) AS NumOngoingProjects FROM clients AS c JOIN projects AS p ON c.ClientID = p.ClientID WHERE p.Status = 'Ongoing' GROUP BY c.ClientID HAVING count(*) > 1 ORDER BY NumOngoingProjects DESC",
+        "Answer": "| ClientName | ContactPerson | Email | NumOngoingProjects || ABC Corporation | John Doe | johndoe@abc.com | 2 | | XYZ Inc. | Jane Smith | janesmith@xyz.com | 2 |"
+    },
+    {
+        "Question": "Find the projects with the highest number of employees assigned. Include the project name, client name, and the number of employees assigned",
+        "SQLQuery": "SELECT p.ProjectName, c.ClientName, count(pa.EmployeeID) AS NumEmployeesAssigned FROM projects AS p JOIN clients AS c ON p.ClientID = c.ClientID JOIN projectassignments AS pa ON p.ProjectID = pa.ProjectID GROUP BY p.ProjectID ORDER BY NumEmployeesAssigned DESC LIMIT 5",
+        "Answer": "Project Alpha, ABC Corporation, 2"
+    },
+    {
+        "Question": "List all engineers with salary over 60,000.",
+        "SQLQuery": "SELECT FirstName, LastName, Salary FROM employees WHERE JobTitle = 'Software Engineer' AND Salary > 60000.00",
+        "Answer": "Alice Johnson"
+    },
+    {
+        "Question": "Show project details for projects in the 'Machine' category.",
+        "SQLQuery": "SELECT * FROM projects WHERE description LIKE '%Machine%';",
+        "Answer": "Project Eta"
+    },
+    {
+        "Question": "List all clients in New York.",
+        "SQLQuery": "SELECT clientName, city FROM clients WHERE city = 'New York';",
+        "Answer": "ABC Corporation"
+    },
+    {
+        "Question": "Find all projects assigned to employee 3.",
+        "SQLQuery": "SELECT p.ProjectName, p.ClientID, p.StartDate, p.EndDate, p.Status, p.Budget, p.Description FROM projects AS p INNER JOIN projectassignments AS pa ON p.ProjectID = pa.ProjectID WHERE pa.EmployeeID = 1003 ORDER BY p.ProjectName",
+        "Answer": "Project Beta"
+    },
+    {
+        "Question": "Show all services and their prices.",
+        "SQLQuery": "SELECT ServiceName, Price FROM services;",
+        "Answer": "CRM Development 50000.00, ERP Implementation 75000.00, IT Infrastructure Upgrade 100000.00, E-commerce Development 120000.00, Cloud Migration 80000.00, Cybersecurity Services 70000.00, AI Integration 90000.00, Blockchain Solutions 95000.00, Mobile App Development 85000.00, Big Data Analytics 110000.00"
+    },
+    {
+        "Question": "List all employees hired after 2020.",
+        "SQLQuery": "SELECT * FROM employees WHERE hireDate > '2020-12-31';",
+        "Answer": "Alice Johnson, Bob Williams"
+    },
+    {
+        "Question": "What are the details of the project with ID 5?",
+        "SQLQuery": "SELECT * FROM projects WHERE ProjectID = 5",
+        "Answer": "Project Epsilon, ClientID 5, StartDate 2023-05-01, EndDate 2023-08-31, Status Completed, Budget 300000.00, Description Cloud migration project"
+    },
+    {
+        "Question": "Get the total budget for projects assigned to client with ID 2.",
+        "SQLQuery": "SELECT SUM(Budget) FROM projects WHERE ClientID = 2;",
+        "Answer": "150000.00"
+    },
+    {
+        "Question": "What services are available in the catalog?",
+        "SQLQuery": "SELECT ServiceName FROM services;",
+        "Answer": "CRM Development, ERP Implementation, IT Infrastructure Upgrade, E-commerce Development, Cloud Migration, Cybersecurity Services, AI Integration, Blockchain Solutions, Mobile App Development, Big Data Analytics"
+    },
+    {
+        "Question": "List all clients who joined after January 1st, 2022.",
+        "SQLQuery": "SELECT * FROM clients WHERE CreatedAt > '2022-01-01';",
+        "Answer": "ABC Corporation, XYZ Inc., Acme Corp, Tech Solutions, Innovatech, NextGen Systems, FutureSoft, ProTech, SoftWareHouse, DigitalEdge"
+    },
+    {
+        "Question": "Find all employees working on the project named 'Project X'.",
+        "SQLQuery": "SELECT e.FirstName, e.LastName FROM employees e INNER JOIN projectassignments pa ON e.EmployeeID = pa.EmployeeID INNER JOIN projects p ON pa.ProjectID = p.ProjectID WHERE p.ProjectName = 'Project X';",
+        "Answer": "Alice Johnson, Bob Williams"
+    },
+    {
+        "Question": "What is the price of the 'CRM Development' service?",
+        "SQLQuery": "SELECT Price FROM services WHERE ServiceName = 'CRM Development';",
+        "Answer": "50000.00"
+    },
+     {
+        "Question": "How many employees are there?",
+        "SQLQuery": "SELECT COUNT(*) FROM employees",
+        "Answer" : "10"
+    },
+
+    {
+        "Question": "I want all projects along with the client and assigned employees.",
+        "SQLQuery": "SELECT p.ProjectName, c.ClientName, e.FirstName, e.LastName FROM projects AS p JOIN clients AS c ON p.ClientID = c.ClientID JOIN projectassignments AS pa ON p.ProjectID = pa.ProjectID JOIN employees AS e ON pa.EmployeeID = e.EmployeeID ORDER BY p.ProjectID",
+        "Answer" : "Project Alpha, ABC Corporation, Alice Johnson, Bob Williams,Project Beta, XYZ Inc., Charlie Davis, Diana Brown,Project Delta, Tech Solutions, Grace Taylor, Henry Anderson,Project Epsilon, Innovatech, Ivy Thomas, Jack Harris,Project Gamma,Acme Corp,Eve Miller,Frank Wilson"
+    },
+
+    {
+        "Question": "What is the total budget and average budget of ongoing projects?",
+        "SQLQuery": "SELECT SUM(Budget), AVG(Budget) FROM projects WHERE Status = 'Ongoing'",
+        "Answer" : "(1200000.00, 150000.00)"
+    },
+
+    {
+        "Question": "How many projects each employee is assigned to provide employee names and project names?",
+        "SQLQuery": "SELECT e.FirstName, e.LastName, COUNT(p.ProjectName) AS NumProjects FROM employees AS e JOIN projectassignments AS pa ON e.EmployeeID = pa.EmployeeID JOIN projects AS p ON pa.ProjectID = p.ProjectID GROUP BY e.FirstName, e.LastName ORDER BY NumProjects DESC",
+        "Answer" : "Alice Johnson, Project Alpha,Bob Williams, Project Alpha,Charlie Davis, Project Beta,Diana Brown, Project Gamma,Eve Miller, Project Alpha,Frank Wilson, Project Alpha,Grace Taylor, Project Alpha,Henry Anderson,Project Alpha,Ivy Thomas,Project Alpha,Jack Harris,Project Alpha"
+    },
+
+    {
+        "Question": "Which projects have a budget exceeding 150,000, whats the budget of that budget provide project description",
+        "SQLQuery": "SELECT p.ProjectName, p.Budget, p.Description FROM projects p WHERE p.Budget > 150000.00",
+        "Answer" : "Project Gamma: 200000.00, Upgrade of existing IT infrastructure,Project Delta: 250000.00, Development of e-commerce platform,Project Epsilon: 300000.00, Cloud migration project,Project Kappa: 160000.00, Big data analytics solution"
+    },
+
+    {
+        "Question": "What is the total and average salary for each department within the company?",
+        "SQLQuery": "SELECT Department, SUM(Salary) AS TotalSalary, AVG(Salary) AS AverageSalary FROM employees GROUP BY Department",
+        "Answer" : "Engineering: Total Salary 190000.00, Average Salary 95000.00,Management: Total Salary 120000.00, Average Salary 120000.00,Data Science: Total Salary 80000.00, Average Salary 80000.00,Quality Assurance: Total Salary 85000.00, Average Salary 85000.00,Design: Total Salary 95000.00, Average Salary 95000.00,Product: Total Salary 110000.00, Average Salary 110000.00,IT: Total Salary 105000.00, Average Salary 105000.00,Marketing: Total Salary 95000.00, Average Salary 95000.00,Sales: Total Salary 115000.00, Average Salary 115000.00"
+    },
+
+    {
+        "Question": "What is the total revenue generated by every client based on their projects? provide name of every company with their revenue",
+        "SQLQuery": "SELECT c.ClientName, SUM(p.Budget) AS Revenue FROM clients AS c JOIN projects AS p ON c.ClientID = p.ClientID GROUP BY c.ClientName ORDER BY Revenue DESC",
+        "Answer" : "Innovatech: 300000.00, Tech Solutions: 250000.00, Acme Corp: 200000.00, DigitalEdge: 160000.00, XYZ Inc.: 150000.00, SoftWareHouse: 150000.00, ProTech: 140000.00, FutureSoft: 130000.00, NextGen Systems: 120000.00, ABC Corporation: 100000.00"
+    },
+
+    {
+        "Question": "Which clients currently have no active projects? what was their last project",
+        "SQLQuery": "SELECT c.ClientName, p.ProjectName, p.EndDate FROM clients c LEFT JOIN projects p ON c.ClientID = p.ClientID WHERE p.Status = 'Completed' AND p.EndDate < CURDATE() ORDER BY p.EndDate DESC",
+        "Answer" : "Acme Corp, Project Gamma,Innovatech, Project Epsilon"
+    },
+
+    {
+        "Question": "Which projects are at risk of delay based on their planned end dates compared to the current date? give me the name of projects and their respective clinet name with project starting date",
+        "SQLQuery": "SELECT p.ProjectName, c.ClientName, p.StartDate FROM projects AS p JOIN clients AS c ON p.ClientID = c.ClientID WHERE p.EndDate < CURDATE()",
+        "Answer" : "Project Alpha, ABC Corporation, 2023-01-01"
+    },
+
+    {
+        "Question": "Which clients have contributed the most in terms of project budgets?",
+        "SQLQuery": "SELECT c.ClientName, SUM(p.Budget) AS TotalBudget FROM clients AS c INNER JOIN projects AS p ON c.ClientID = p.ClientID GROUP BY c.ClientName ORDER BY TotalBudget DESC LIMIT 5",
+        "Answer" : "Innovatech, Tech Solutions, Acme Corp, DigitalEdge, SoftWareHouse"
+    },
+
+    {
+        "Question": "What is the average budget for projects using each service?",
+        "SQLQuery": "SELECT AVG(projects.Budget) AS AverageBudget, services.ServiceName FROM projects INNER JOIN projectassignments ON projects.ProjectID = projectassignments.ProjectID INNER JOIN employees ON projectassignments.EmployeeID = employees.EmployeeID INNER JOIN services ON employees.Department = services.ServiceName GROUP BY services.ServiceName ORDER BY AverageBudget",
+        "Answer" : "100000.00 CRM Development,150000.00 ERP Implementation ,200000.00 IT Infrastructure Upgrade"
+    },
+    {
+    
+        "Question": "what is the top 5 service of the company?",
+        "SQLQuery": "SELECT s.ServiceName, s.Price FROM services s ORDER BY s.Price DESC LIMIT 5",
+        "Answer" : "E-commerce Development, Big Data Analytics, IT Infrastructure Upgrade, Blockchain Solutions, AI Integration"
+    }
+   
+]

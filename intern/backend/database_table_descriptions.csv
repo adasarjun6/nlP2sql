@@ -1,0 +1,6 @@
+Table,Description
+clients,"Contains information about clients including unique ID, name, contact person details, email, phone, address, and other relevant details. Essential for managing client relationships and contact information."
+employees,"Stores details of employees such as unique ID, first and last names, email, phone number, hire date, job title, department, salary, and address. Crucial for HR and organizational management."
+projectassignments,"Records assignments of employees to projects including assignment ID, project ID, employee ID, assigned date, and role. Key for tracking project resource allocation."
+projects,"Holds details about projects including project ID, name, client ID, start and end dates, status, budget, and description. Central for project management and client interaction."
+services,"Contains information about services offered including service ID, name, description, and price. Essential for managing service catalog and pricing."
